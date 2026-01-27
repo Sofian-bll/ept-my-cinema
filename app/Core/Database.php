@@ -1,7 +1,6 @@
 <?php
 
-namespace Sofian\MyCinema\Core;
-
+namespace app\Core;
 use PDO;
 
 class Database
@@ -15,8 +14,7 @@ class Database
             $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             return $pdo;
         } catch (\PDOException|\TypeError $e) {
-            echo '<h4 style="color: RED"> ERROR OCCURED </h4> : <p>' . $e->getMessage() . '</p>';
-            die();
+            die('Connection Failed: ' . $e->getMessage());
         }
     }
 }

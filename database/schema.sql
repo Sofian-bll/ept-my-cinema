@@ -14,8 +14,8 @@ CREATE TABLE movies
     release_year INT          NOT NULL,
     genre        VARCHAR(200),
     director     VARCHAR(100),
-    created_at   DATETIME,
-    updated_at   DATETIME
+    created_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at   DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE rooms
@@ -25,8 +25,8 @@ CREATE TABLE rooms
     capacity   INT          NOT NULL,
     type       VARCHAR(100),
     active     BOOLEAN      NOT NULL DEFAULT TRUE COMMENT 'Soft delete flag',
-    created_at DATETIME,
-    updated_at DATETIME
+    created_at DATETIME              DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME              DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE screenings
@@ -35,7 +35,7 @@ CREATE TABLE screenings
     movies_id  INT      NOT NULL,
     room_id    INT      NOT NULL,
     start_time DATETIME NOT NULL,
-    created_at DATETIME,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (movies_id) REFERENCES movies (id),
     FOREIGN KEY (room_id) REFERENCES rooms (id)
 )

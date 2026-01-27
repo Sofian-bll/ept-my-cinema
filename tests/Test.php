@@ -1,17 +1,18 @@
 <?php
 
 namespace tests;
+require_once './../app/Core/Database.php';
 
-use Sofian\MyCinema\Core\Database;
+use app\Core\Database;
 
 class Test extends Database
 {
-    public function getMovies(): void
+    public function getMovies()
     {
         $sql  = "SELECT * FROM movies";
         $stmt = $this->connect()->query($sql);
         while ($row = $stmt->fetch()) {
-            echo $row['title'] . ' released in ' . $row['release_year'] . '<br>';
+            echo $row['title'] . '<br>';
         }
     }
 }

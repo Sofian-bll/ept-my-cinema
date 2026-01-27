@@ -5,7 +5,7 @@
     "license": "Unlicense",
     "autoload": {
         "psr-4": {
-            "Sofian\\MyCinema\\": "app/"
+            "Sofian\\MyCinema\\": "/app"
         }
     },
     "authors": [

@@ -1,13 +1,12 @@
 <?php
+//tests/test.php
+namespace Tests;
 
-namespace tests;
-require_once './../app/Core/Database.php';
+use App\Core\Database;
 
-use app\Core\Database;
-
-class Test extends Database
+class getMoviesTest extends Database
 {
-    public function getMovies()
+    public function getMovies(): void
     {
         $sql  = "SELECT * FROM movies";
         $stmt = $this->connect()->query($sql);

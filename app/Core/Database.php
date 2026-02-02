@@ -1,20 +1,26 @@
 <?php
 
-namespace app\Core;
+namespace App\Core;
+
 use PDO;
+use PDOException;
+use PDOStatement;
 
 class Database
 {
     public function connect(): PDO
     {
         try {
-            $dsn = 'mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'];
-            $pdo = new PDO($dsn, $_ENV['DB_USER'], $_ENV['DB_PASS']);
+            // Config file
+            $config = require __DIR__ . '/../../config/database.php';
+
+            $dsn = "mysql:host={$config['host']};dbname={$config['dbname']}";
+            $pdo = new PDO($dsn, $config['user'], $config['password']);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
             return $pdo;
         } catch (\PDOException|\TypeError $e) {
-            die('Connection Failed: ' . $e->getMessage());
+            throw new PDOException('Database connection failed: ' . $e->getMessage());
         }
     }
 }

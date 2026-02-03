@@ -38,9 +38,10 @@ class Router
                     if ($this->isParam($candidatePathPart)) {
                         $params[substr($candidatePathPart, 1, -1)] = $requestedPathPart;
 
-                    // Si 'Non' sortir de la boucle
+                        // Si 'Non' sortir de la boucle
                     } elseif ($candidatePathPart !== $requestedPathPart) {
                         $foundMatch = false;
+                        echo '<h1> Page Not Found <br> 404 </h1>';
                         break;
                     }
                 }
@@ -68,7 +69,7 @@ class Router
     {
         $isParam = false;
 
-        if (str_contains('{', $candidatePathPart) && str_contains('}', $candidatePathPart)) {
+        if (str_contains($candidatePathPart, '{') && str_contains($candidatePathPart, '}')) {
             $isParam = true;
         }
 

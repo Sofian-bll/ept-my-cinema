@@ -100,11 +100,7 @@ abstract class Model
 
         $sql  = 'DELETE FROM ' . $table . ' WHERE id = :id';
         $stmt = $database->prepare($sql);
-        try {
-            $stmt->execute([ 'id' => $this->id ]);
-        } catch (\Exception | \PDOException $e) {
-            echo dump($e->getMessage());
-        }
+        $stmt->execute([ 'id' => $this->id ]);
 
         return $stmt->rowCount() > 0;
     }

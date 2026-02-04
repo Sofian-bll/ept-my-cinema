@@ -57,7 +57,7 @@ class Router
             $controller = new $route['controller'];
             $controller->{$route['method']}(...$params);
         } else {
-            echo '<h1> Page Not Found <br> 404 </h1>';
+            throw new \RuntimeException('Page non trouvée', 404);
         }
     }
 

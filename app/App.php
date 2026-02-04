@@ -20,12 +20,7 @@ class App
         $dotenv->load();
 
         // Set Error handler
-        set_exception_handler([ErrorHandler::class, 'handle']);
-
-        // Display Error
-//        ini_set('display_errors', 1);
-//        ini_set('display_startup_errors', 1);
-//        error_reporting(E_ALL);
+        set_exception_handler([ ErrorHandler::class, 'handle' ]);
     }
 
     public function run(): void

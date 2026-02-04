@@ -1,6 +1,6 @@
-<body style='background-color: #0F1115; color: #FFFFFF; font-family: system-ui, -apple-system, sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; text-align: center;'>
+<div style='background-color: #0F1115; color: #FFFFFF; font-family: system-ui, -apple-system, sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; text-align: center;'>
 
-    <main style='background: #1A1D23; padding: 3rem; border-radius: 12px; border: 1px solid #2A2E35; box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-width: 500px; width: 90%;'>
+    <div style='background: #1A1D23; padding: 3rem; border-radius: 12px; border: 1px solid #2A2E35; box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-width: 500px; width: 90%;'>
 
         <header style='margin-bottom: 2rem;'>
             <span style='color: #00D1FF; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; text-shadow: 0 0 8px rgba(0, 209, 255, 0.5); font-size: 0.9rem;'>
@@ -31,6 +31,6 @@
             </a>
         </footer>
 
-    </main>
+    </div>
 
-</body>
+</div>

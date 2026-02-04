@@ -20,7 +20,6 @@ class Movies extends Model
     protected ?string $created_at;
     protected ?string $updated_at;
 
-
     /** ### GETTER AND SETTER*/
 
     /**

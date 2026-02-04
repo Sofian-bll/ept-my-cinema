@@ -2,16 +2,21 @@
 
 namespace App\Controllers;
 
+use App\Core\Controller;
 use App\Models\Movies;
 
-class MoviesController extends Movies
+class MoviesController extends Controller
 {
-    /**
-     * @throws \Exception
-     */
-    public function getAllMovies()
+    public function allMovies(): string
     {
-        require '../views/MoviesVue';
-        return parent::getAllMovies();
+        return $this->renderView('movies/allMovies.php', Movies::all());
+    }
+
+    public function delete($id): mixed
+    {
+        $movie = Movies::find($id);
+        $movie?->delete($id);
+
+        return $this->redirectToRoute('/movies');
     }
 }

@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function home(): string
     {
-        return $this->renderView('home/index.php', [ 'title' => 'Accueil' ]);
+        return $this->renderView('home/home.php', [ 'title' => 'Accueil' ]);
     }
 
     #[NoReturn]

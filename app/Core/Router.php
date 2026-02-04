@@ -41,7 +41,6 @@ class Router
                         // Si 'Non' sortir de la boucle
                     } elseif ($candidatePathPart !== $requestedPathPart) {
                         $foundMatch = false;
-                        echo '<h1> Page Not Found <br> 404 </h1>';
                         break;
                     }
                 }
@@ -57,6 +56,8 @@ class Router
         if (isset($route)) {
             $controller = new $route['controller'];
             $controller->{$route['method']}(...$params);
+        } else {
+            echo '<h1> Page Not Found <br> 404 </h1>';
         }
     }
 

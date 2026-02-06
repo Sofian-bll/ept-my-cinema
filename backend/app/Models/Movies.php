@@ -11,6 +11,7 @@ class Movies extends Model
      */
 
     protected static string $table = 'movies';
+    protected static array $ignored = ['relatedScreenings'];
     protected ?string $title;
     protected ?string $description;
     protected ?int $duration;
@@ -19,6 +20,9 @@ class Movies extends Model
     protected ?string $director;
     protected ?string $created_at;
     protected ?string $updated_at;
+
+    protected ?array $relatedScreenings;
+
 
     /** ### GETTER AND SETTER*/
 
@@ -132,5 +136,14 @@ class Movies extends Model
     public function getCreatedAt(): ?string
     {
         return $this->created_at;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRelatedScreenings(): ?array
+    {
+        // TODO Connect Screenings table return array with screenings object or empty array (false)
+        return $this->relatedScreenings;
     }
 }

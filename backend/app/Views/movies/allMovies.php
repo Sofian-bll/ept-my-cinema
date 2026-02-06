@@ -40,6 +40,21 @@
                 <form action="?path=/movies/delete/<?= $movie->getId() ?>" method="post">
                     <button type="submit">Delete</button>
                 </form>
+
+                <details>
+                    <summary>
+                        Edit
+                    </summary>
+                    <form action="?path=/movies/edit/<?= $movie->getId() ?>" method='post'>
+                        <input type='text' name='title' value="<?= $movie->getTitle() ?>">
+                        <input type='text' name='description' value="<?= $movie->getDescription() ?>">
+                        <input type='text' name='director' value="<?= $movie->getDirector() ?>">
+                        <input type='number' name='duration' value="<?= $movie->getDuration() ?>">
+                        <input type='number' name='release_year' value="<?= $movie->getReleaseYear() ?>">
+                        <input type='text' name='genre' value="<?= $movie->getGenre() ?>">
+                        <button type='submit'>Submit</button>
+                    </form>
+                </details>
             </footer>
         </article>
     <?php endforeach; ?>

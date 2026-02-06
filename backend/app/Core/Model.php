@@ -2,10 +2,11 @@
 
 namespace App\Core;
 
-abstract class Model
+abstract class Model implements \JsonSerializable
 {
     protected static string $table;
     protected ?int $id;
+    protected static array $ignored = [];
 
     /**
      * @return int|null
@@ -55,10 +56,15 @@ abstract class Model
         $database = self::getConnection();
         $table    = static::$table;
 
+        $objProps = get_object_vars($this);
+        unset($objProps['id'], $objProps['table'], $objProps['created_at'], $objProps['updated_at']);
+
+        foreach (static::$ignored as $prop) {
+            unset($objProps[$prop]);
+        }
+
         if ($this->id === null) {
             // Insert
-            $objProps = get_object_vars($this);
-            unset($objProps['id'], $objProps['table']);
 
             $columns  = array_keys($objProps);
             $tableCol = implode(',', $columns);
@@ -67,23 +73,16 @@ abstract class Model
             $sql = "INSERT INTO {$table} ({$tableCol}) VALUES ({$tableVal})";
         } else {
             // Update
-            $objProps = get_object_vars($this);
-            unset($objProps['id'], $objProps['table']);
 
-            $lastProps = end($objProps);
-            $kv        = '';
-
+            $kv = [];
             foreach ($objProps as $key => $prop) {
-                if ($prop === $lastProps) {
-                    $kv .= $key . ' = :' . $key;
-                } else {
-                    $kv .= $key . ' = :' . $key . ', ';
-                }
+                $kv[] = $key . ' = :' . $key;
             }
 
-            $sql            = "UPDATE {$table} SET {$kv} WHERE id = :id";
+            $sql            = "UPDATE {$table} SET " . implode(', ', $kv) . ' WHERE id = :id';
             $objProps['id'] = $this->id;
         }
+
         $stmt = $database->prepare($sql);
         $stmt->execute($objProps);
     }
@@ -103,5 +102,17 @@ abstract class Model
         $stmt->execute([ 'id' => $this->id ]);
 
         return $stmt->rowCount() > 0;
+    }
+
+    public function jsonSerialize(): array
+    {
+        $data = get_object_vars($this);
+        unset($data['table'], $data['ignored']);
+
+        foreach (static::$ignored as $prop) {
+            unset($data[$prop]);
+        }
+
+        return $data;
     }
 }

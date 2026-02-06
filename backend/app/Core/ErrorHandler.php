@@ -27,7 +27,10 @@ class ErrorHandler
         if ($_ENV['APP_ENV'] === 'dev') {
             echo "<h1>Fatal Error ($code)</h1>";
             echo '<p><strong>Message :</strong> ' . $e->getMessage() . '</p>';
+            echo '<p><strong>File :</strong> ' . $e->getFile() . '</p>';
+            echo '<p><strong>Line :</strong> ' . $e->getLine() . '</p>';
             echo '<pre>' . $e->getTraceAsString() . '</pre>';
+            dump($e->getPrevious());
         } else if ($code === 404) {
             self::renderView('error/404.php');
         } else {

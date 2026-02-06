@@ -16,7 +16,7 @@ class App
     public function __construct()
     {
         // Loading the .env var
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+        $dotenv = Dotenv::createImmutable(__DIR__ . '/my-cinema');
         $dotenv->load();
 
         // Set Error handler

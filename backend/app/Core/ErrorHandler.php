@@ -2,6 +2,9 @@
 
 namespace App\Core;
 
+use ErrorException;
+use JetBrains\PhpStorm\NoReturn;
+
 class ErrorHandler
 {
 
@@ -11,6 +14,7 @@ class ErrorHandler
         return require dirname(__DIR__, 1) . '/Views/layout.php';
     }
 
+    #[NoReturn]
     public static function handle(\Throwable $e): void
     {
         $code = $e->getCode() ?: 500;
@@ -22,19 +26,33 @@ class ErrorHandler
             $code = $e->getCode() ?: 500;
         }
 
+        // Implements JSON response
+        $allowOrigin = $_ENV['ALLOWED_ORIGIN'];
+
         http_response_code($code);
+        header('Content-Type: application/json');
+        header("Access-Control-Allow-Origin: $allowOrigin");
+
 
         if ($_ENV['APP_ENV'] === 'dev') {
-            echo "<h1>Fatal Error ($code)</h1>";
-            echo '<p><strong>Message :</strong> ' . $e->getMessage() . '</p>';
-            echo '<p><strong>File :</strong> ' . $e->getFile() . '</p>';
-            echo '<p><strong>Line :</strong> ' . $e->getLine() . '</p>';
-            echo '<pre>' . $e->getTraceAsString() . '</pre>';
-            dump($e->getPrevious());
-        } else if ($code === 404) {
-            self::renderView('error/404.php');
+            echo json_encode([
+                'error' => $e->getMessage(),
+                'code'  => $code,
+                'file'  => $e->getFile(),
+                'line'  => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
         } else {
-            self::renderView('error/500.php');
+            echo json_encode([ 'error' => $code === 404 ? 'Not Found' : 'Internal Server Error' ]);
         }
+        exit();
+    }
+
+    /**
+     * @throws ErrorException
+     */
+    public static function handleError($errorNb, $errorStr, $errorFile, $errorLine): void
+    {
+        throw new ErrorException($errorStr, 0, $errorNb, $errorFile, $errorLine);
     }
 }

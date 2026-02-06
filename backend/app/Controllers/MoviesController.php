@@ -23,7 +23,7 @@ class MoviesController extends Controller
         return $this->redirectToRoute('/movies');
     }
 
-    public function edit($id)
+    public function update($id)
     {
         $movie = Movies::find($id);
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -34,7 +34,7 @@ class MoviesController extends Controller
             $movie?->setReleaseYear($_POST['release_year']);
             $movie?->save();
 
-            return $this->redirectToRoute('/movies');
+            return $this->redirectToRoute('/');
         }
         throw new \RuntimeException('Input Error', 422);
     }

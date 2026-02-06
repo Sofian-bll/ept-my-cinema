@@ -6,26 +6,29 @@ use JetBrains\PhpStorm\NoReturn;
 
 abstract class Controller
 {
-    protected function renderView(string $view, array $data = []): string
+    #[NoReturn]
+    protected function jsonResponse(mixed $data, int $status = 200): void
     {
-        $viewPath = dirname(__DIR__, 1) . '/Views/' . $view;
-        return require dirname(__DIR__, 1) . '/Views/layout.php';
+        $allowOrigin = $_ENV['ALLOWED_ORIGIN'];
+
+        http_response_code($status);
+        header('Content-Type: application/json');
+        header("Access-Control-Allow-Origin: $allowOrigin");
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type');
+
+        echo json_encode($data);
+        exit();
+    }
+
+    protected function getJsonBody(): array
+    {
+        return json_decode(file_get_contents('php://input'), true ?? []);
     }
 
     #[NoReturn]
-    protected function redirectToRoute(string $path, array $params = []): mixed
+    protected function error(string $message, int $status = 400): void
     {
-        $uri = $_SERVER['SCRIPT_NAME'] . '?path=' . $path;
-
-        if (!empty($params)) {
-            $strParams = [];
-            foreach ($params as $key => $value) {
-                $strParams[] = urlencode((string)$key) . '=' . urlencode((string)$value);
-            }
-            $uri .= '&' . implode('&', $strParams);
-        }
-
-        header('Location: ' . $uri);
-        die();
+        $this->jsonResponse([ 'error' => $message ], $status);
     }
 }

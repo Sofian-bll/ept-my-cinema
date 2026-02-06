@@ -6,60 +6,35 @@ require __DIR__ . '/../../config/routes.php';
 class Router
 {
     private array $routes; // Routes
-    private array $availablePaths; // All paths in routes
-    private mixed $requestedPath; // Client requested path
+    private string $requestPath; // Client requested path
+
 
     public function __construct()
     {
-        $this->routes         = ROUTES;
-        $this->availablePaths = array_keys($this->routes);
-        $this->requestedPath  = $_GET['path'] ?? '/'; // Si le path not exist -> rediriger
+        $this->routes      = ROUTES;
+        $this->requestPath = $_GET['path'] ?? '/'; // Si le path not exist -> rediriger
         $this->parseRoutes();
     }
 
-    private function parseRoutes(): void // Si URL Static ou dynamique
+
+    private function parseRoutes(): void
     {
-        $explodedRequestedPath = $this->explodePath($this->requestedPath);
-        $params                = [];
+        $this->handleCors();
 
-        // Loop sur chaque routes dans config/routes.php
-        foreach ($this->availablePaths as $candidatePath) {
-            $foundMatch            = true;
-            $explodedCandidatePath = $this->explodePath($candidatePath); // Transforme Candidate Path en Array
+        foreach ($this->routes as $route) {
+            if ($this->matchPath($route['path'], $this->requestPath) && $route['http'] === $_SERVER['REQUEST_METHOD']) {
 
-            // Verifier si le requested Path a le meme nombre de pathPart que ceux présent dans les routes
-            if (count($explodedCandidatePath) === count($explodedRequestedPath)) {
+                $params = $this->extractParams($route['path'], $this->requestPath);
 
-                // foreach sur array de Candidate Path ['controller', 'method', '{id}'] / ['movies', 'edit', '42']
-                foreach ($explodedRequestedPath as $key => $requestedPathPart) {
-                    $candidatePathPart = $explodedCandidatePath[$key];
+                $controller = new $route['controller']();
+                $controller->{$route['method']}(...$params);
 
-                    // Si il y as un parameter, l'ajouter a array $params;
-                    if ($this->isParam($candidatePathPart)) {
-                        $params[substr($candidatePathPart, 1, -1)] = $requestedPathPart;
-
-                        // Si 'Non' sortir de la boucle
-                    } elseif ($candidatePathPart !== $requestedPathPart) {
-                        $foundMatch = false;
-                        break;
-                    }
-                }
-
-                // Si les routes match définir la nouvelle route
-                if ($foundMatch) {
-                    $route = $this->routes[$candidatePath];
-                    break;
-                }
+                return; // On a trouvé, on sort.
             }
         }
-
-        if (isset($route)) {
-            $controller = new $route['controller'];
-            $controller->{$route['method']}(...$params);
-        } else {
-            throw new \RuntimeException('Page non trouvée', 404);
-        }
+        throw new \RuntimeException('Page non trouvée', 404);
     }
+
 
     private function explodePath(string $path): array
     {
@@ -76,4 +51,72 @@ class Router
 
         return $isParam;
     }
+
+    private function handleCors(): void
+    {
+        $allowOrigin = $_ENV['ALLOWED_ORIGIN'];
+
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { // Requête du navigateur qui demande automatiquement les methods à accepter venant d'une url
+            header('Content-Type: application/json');
+            header("Access-Control-Allow-Origin: $allowOrigin"); // Donne l'autorisation a cette url
+            header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS'); // Les méthodes autorisées
+            header('Access-Control-Allow-Headers: Content-Type');
+            http_response_code(200); // Indique que j'ai bien reçu et traité correctement la requête
+            exit();
+        }
+    }
+
+    private function matchPath(string $routePath, string $requestPath): bool
+    {
+        $routeSegments = $this->explodePath($routePath);
+        // Result: ['api', 'movies', '{id}']
+        $requestSegments = $this->explodePath($requestPath);
+        // Result: ['api', 'movies', '5']
+
+        // Les deux paths doivent avoir le même nombre de segments
+        if (count($routeSegments) !== count($requestSegments)) {
+            return false;
+        }
+
+        // Comparer segment par segment
+        foreach ($requestSegments as $key => $requestSegment) {
+            $routeSegment = $routeSegments[$key];
+
+            if ($this->isParam($routeSegment)) { // Si param → on continue
+                continue; // passe a l'itération suivante
+            }
+
+            // Si différent → échec
+            if ($routeSegment !== $requestSegment) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function extractParams(string $routePath, string $requestPath): array
+    {
+        $params        = [];
+        $routeSegments = $this->explodePath($routePath);
+        // Result: ['api', 'movies', '{id}']
+        $requestSegments = $this->explodePath($requestPath);
+        // Result: ['api', 'movies', '5']
+
+
+        // Comparer segment par segment
+        foreach ($requestSegments as $key => $requestSegment) {
+            $routeSegment = $routeSegments[$key];
+
+            if (!$this->isParam($routeSegment)) { // Si non param → on continue
+                continue; // passe a l'itération suivante
+            }
+
+            $params[substr($routeSegment, 1, -1)] = $requestSegment;
+        }
+
+        return $params;
+    }
+
 }
+

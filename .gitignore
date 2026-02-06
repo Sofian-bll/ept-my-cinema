@@ -2,7 +2,7 @@
 /vendor/
 
 # --- Fichiers d'environnement (secrets) ---
-/.env
+/backend/.env
 /.env.example
 !/.env.example
 

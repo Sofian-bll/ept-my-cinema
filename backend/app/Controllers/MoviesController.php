@@ -54,13 +54,13 @@ class MoviesController extends Controller
         $data = $this->getJsonBody();
 
 
-        $movie?->setTitle($data['title'] ?? $movie->getTitle());
-        $movie?->setDescription($data['description'] ?? $movie->getDescription());
-        $movie?->setDirector($data['director'] ?? $movie->getDirector());
-        $movie?->setDuration($data['duration'] ?? $movie->getDuration());
-        $movie?->setReleaseYear($data['release_year'] ?? $movie->getReleaseYear());
-        $movie?->setGenre($data['genre'] ?? $movie->getGenre());
-        $movie?->save();
+        $movie->setTitle($data['title'] ?? $movie->getTitle());
+        $movie->setDescription($data['description'] ?? $movie->getDescription());
+        $movie->setDirector($data['director'] ?? $movie->getDirector());
+        $movie->setDuration($data['duration'] ?? $movie->getDuration());
+        $movie->setReleaseYear($data['release_year'] ?? $movie->getReleaseYear());
+        $movie->setGenre($data['genre'] ?? $movie->getGenre());
+        $movie->save();
 
         $this->jsonResponse('Movie updated');
     }
@@ -72,7 +72,9 @@ class MoviesController extends Controller
         if (!$movie) {
             $this->error('Movie not found', 404);
         }
-        $movie?->delete();
+        $movie->delete();
         $this->jsonResponse('Movie deleted');
     }
+
+
 }

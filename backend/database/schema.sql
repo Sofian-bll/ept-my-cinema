@@ -35,7 +35,9 @@ CREATE TABLE screenings
     movies_id  INT      NOT NULL,
     room_id    INT      NOT NULL,
     start_time DATETIME NOT NULL,
+    end_time   DATETIME NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (movies_id) REFERENCES movies (id),
     FOREIGN KEY (room_id) REFERENCES rooms (id)
 )

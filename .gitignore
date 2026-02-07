@@ -1,40 +1,29 @@
-# --- Dépendances Composer ---
-/vendor/
+# --- Dépendances ---
+/backend/vendor/
+/frontend/node_modules/
 
-# --- Fichiers d'environnement (secrets) ---
-/backend/.env
-/.env.example
-!/.env.example
+# --- Environnement (secrets) ---
+.env
+.env.local
+*.local
+!.env.example
 
-# --- Logs & fichiers temporaires ---
+# --- Build ---
+/frontend/dist/
+
+# --- Logs & cache ---
 *.log
 *.tmp
-*.temp
 *.cache
-
-# --- Artefacts de tests / couverture ---
-/coverage/
-/coverage.xml
-/.phpunit.result.cache
-
-# --- Fichiers de build / archives ---
-*.zip
-*.tar
-*.tar.gz
-*.gz
+.phpunit.cache/
+.phpunit.result.cache
 
 # --- OS ---
 .DS_Store
-.AppleDouble
-.LSOverride
 Thumbs.db
 
-# --- IDE / éditeurs ---
+# --- IDE ---
 .idea/
-*.iml
 .vscode/
 *.swp
 *.swo
-
-# --- Optionnel: ignorer les fichiers générés localement ---
-# /public/*.map

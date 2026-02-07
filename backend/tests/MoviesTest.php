@@ -1,13 +1,15 @@
 <?php
 
-namespace tests;
+namespace Tests;
 
-use App\Models\Movies;
+use App\Controllers\MoviesController;
+use JetBrains\PhpStorm\NoReturn;
 
-class MoviesTest extends Movies
+class MoviesTest extends MoviesController
 {
-    public function testGetAllMovies(): array
+    #[NoReturn]
+    public function testGetAllMovies(): null
     {
-            return $this->getAllMovies();
+            $this->list();
     }
 }

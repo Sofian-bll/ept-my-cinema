@@ -1,6 +1,5 @@
 <?php
 
-use App\Controllers\HomeController;
 use App\Controllers\MoviesController;
 
 const ROUTES = [

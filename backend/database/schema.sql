@@ -1,9 +1,9 @@
 CREATE DATABASE IF NOT EXISTS my_cinema;
 USE my_cinema;
 
+DROP TABLE IF EXISTS screenings;
 DROP TABLE IF EXISTS movies;
 DROP TABLE IF EXISTS rooms;
-DROP TABLE IF EXISTS screenings;
 
 CREATE TABLE movies
 (

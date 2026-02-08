@@ -11,7 +11,7 @@ class Movies extends Model
      */
 
     protected static string $table = 'movies';
-    protected static array $ignored = ['relatedScreenings'];
+    protected static array $ignored = [ 'relatedScreenings' ];
     protected ?string $title;
     protected ?string $description;
     protected ?int $duration;
@@ -21,10 +21,7 @@ class Movies extends Model
     protected ?string $created_at;
     protected ?string $updated_at;
 
-    protected ?array $relatedScreenings;
-
-
-    /** ### GETTER AND SETTER*/
+    //region Getters & Setters
 
     /**
      * @return string|null
@@ -138,12 +135,18 @@ class Movies extends Model
         return $this->created_at;
     }
 
-    /**
-     * @return array
-     */
-    public function getRelatedScreenings(): ?array
+    //endregion
+
+
+    public function hasScreenings(): bool
     {
-        // TODO Connect Screenings table return array with screenings object or empty array (false)
-        return $this->relatedScreenings;
+        $database = self::getConnection();
+
+        $sql  = "SELECT id FROM screenings WHERE movies_id = :id LIMIT 1";
+        $stmt = $database->prepare($sql);
+        $stmt->execute([ 'id' => $this->id ]);
+        $column = $stmt->fetchColumn();
+
+        return $column !== false;
     }
 }

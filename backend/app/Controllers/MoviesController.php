@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Helpers\ValidationHelper;
 use App\Models\Movies;
 use JetBrains\PhpStorm\NoReturn;
 
@@ -17,21 +18,21 @@ class MoviesController extends Controller
     #[NoReturn]
     public function show($id): void // GET //
     {
-        $movie = Movies::find($id);
-
-        if (!$movie) {
-            $this->error('Movie not found', 404);
-        }
-
+        $movie = $this->findOrFail(Movies::class, $id, 'Movie not found');
         $this->jsonResponse($movie);
     }
 
     #[NoReturn]
     public function create(): void
     {
-        $data  = $this->getJsonBody();
-        $movie = new Movies();
+        $data = $this->getJsonBody();
 
+        $missing = ValidationHelper::required($data, ['title', 'description', 'director', 'duration', 'release_year', 'genre']);
+        if (!empty($missing)) {
+            $this->error('Missing required fields', 400, ['fields' => $missing]);
+        }
+
+        $movie = new Movies();
         $movie->setTitle($data['title']);
         $movie->setDescription($data['description']);
         $movie->setDirector($data['director']);
@@ -46,10 +47,7 @@ class MoviesController extends Controller
     #[NoReturn]
     public function update($id): void // PUT //
     {
-        $movie = Movies::find($id);
-        if (!$movie) {
-            $this->error('Movie not found', 404);
-        }
+        $movie = $this->findOrFail(Movies::class, $id, 'Movie not found');
 
         $data = $this->getJsonBody();
 
@@ -68,10 +66,12 @@ class MoviesController extends Controller
     #[NoReturn]
     public function delete($id): void // DELETE //
     {
-        $movie = Movies::find($id);
-        if (!$movie) {
-            $this->error('Movie not found', 404);
+        $movie = $this->findOrFail(Movies::class, $id, 'Movie not found');
+
+        if ($movie->hasScreenings()) {
+            $this->error('Cannot delete movie with existing screenings', 409);
         }
+
         $movie->delete();
         $this->jsonResponse('Movie deleted');
     }

@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Core\Model;
+use App\Traits\SoftDeleteTrait;
 
 class Rooms extends Model
 {
+    use SoftDeleteTrait;
+
     protected static string $table = 'rooms';
     protected ?string $name;
     protected ?int $capacity;
@@ -13,6 +16,8 @@ class Rooms extends Model
     protected ?bool $active;
     protected ?string $created_at;
     protected ?string $updated_at;
+
+    //region Getter & Setter
 
     /**
      * @return string|null
@@ -93,4 +98,19 @@ class Rooms extends Model
     {
         return $this->updated_at;
     }
+    //endregion
+
+    public function hasScreenings(): bool
+    {
+        $database = self::getConnection();
+
+        $sql  = 'SELECT id FROM screenings WHERE room_id = :id LIMIT 1';
+        $stmt = $database->prepare($sql);
+        $stmt->execute([ 'id' => $this->id ]);
+        $column = $stmt->fetchColumn();
+
+        return $column !== false;
+    }
+
+
 }

@@ -27,8 +27,19 @@ abstract class Controller
     }
 
     #[NoReturn]
-    protected function error(string $message, int $status = 400): void
+    protected function error(string $message, int $status = 400, array $data = []): void
     {
-        $this->jsonResponse([ 'error' => $message ], $status);
+        $response = ['error' => $message];
+        $response = array_merge($response, $data);
+        $this->jsonResponse($response,$status);
     }
+    protected function findOrFail(string $modelClass, int $id, string $message = 'Resource not found'): mixed
+    {
+        $entity = $modelClass::find($id); // Retrieve ID from Class Methods
+        if (!$entity) {
+            $this->error($message, 404);
+        }
+        return $entity;
+    }
+
 }

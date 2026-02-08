@@ -2,8 +2,10 @@
 
 namespace App\Core;
 
+
 abstract class Model implements \JsonSerializable
 {
+
     protected static string $table;
     protected ?int $id = null;
     protected static array $ignored = [];
@@ -115,4 +117,5 @@ abstract class Model implements \JsonSerializable
 
         return $data;
     }
+
 }

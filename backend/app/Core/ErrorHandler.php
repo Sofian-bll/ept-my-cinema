@@ -8,11 +8,6 @@ use JetBrains\PhpStorm\NoReturn;
 class ErrorHandler
 {
 
-    private static function renderView(string $view): string
-    {
-        $viewPath = dirname(__DIR__, 1) . '/Views/' . $view;
-        return require dirname(__DIR__, 1) . '/Views/layout.php';
-    }
 
     #[NoReturn]
     public static function handle(\Throwable $e): void

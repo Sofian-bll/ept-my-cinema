@@ -19,7 +19,12 @@ class MoviesController extends Controller
     public function show($id): void // GET //
     {
         $movie = $this->findOrFail(Movies::class, $id, 'Movie not found');
-        $this->jsonResponse($movie);
+
+        $response = $movie->jsonSerialize();
+        $response['screenings'] = $movie->getScreenings();
+        $response['rooms']      = $movie->getRooms();
+
+        $this->jsonResponse($response);
     }
 
     #[NoReturn]

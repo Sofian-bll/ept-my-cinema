@@ -11,7 +11,6 @@ class Movies extends Model
      */
 
     protected static string $table = 'movies';
-    protected static array $ignored = [ 'relatedScreenings' ];
     protected ?string $title;
     protected ?string $description;
     protected ?int $duration;
@@ -148,5 +147,27 @@ class Movies extends Model
         $column = $stmt->fetchColumn();
 
         return $column !== false;
+    }
+
+    public function getScreenings(): array
+    {
+        $database = self::getConnection();
+
+        $sql  = 'SELECT * FROM screenings WHERE movies_id = :id';
+        $stmt = $database->prepare($sql);
+        $stmt->execute([ 'id' => $this->id ]);
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, Screenings::class);
+    }
+
+    public function getRooms(): array
+    {
+        $database = self::getConnection();
+
+        $sql  = 'SELECT DISTINCT r.* FROM rooms r JOIN screenings s ON s.room_id = r.id WHERE s.movies_id = :id';
+        $stmt = $database->prepare($sql);
+        $stmt->execute([ 'id' => $this->id ]);
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, Rooms::class);
     }
 }

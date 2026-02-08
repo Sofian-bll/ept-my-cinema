@@ -112,5 +112,25 @@ class Rooms extends Model
         return $column !== false;
     }
 
+    public function getScreenings(): array
+    {
+        $database = self::getConnection();
 
+        $sql  = 'SELECT * FROM screenings WHERE room_id = :id';
+        $stmt = $database->prepare($sql);
+        $stmt->execute([ 'id' => $this->id ]);
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, Screenings::class);
+    }
+
+    public function getMovies(): array
+    {
+        $database = self::getConnection();
+
+        $sql  = 'SELECT DISTINCT m.* FROM movies m JOIN screenings s ON s.movies_id = m.id WHERE s.room_id = :id';
+        $stmt = $database->prepare($sql);
+        $stmt->execute([ 'id' => $this->id ]);
+
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, Movies::class);
+    }
 }

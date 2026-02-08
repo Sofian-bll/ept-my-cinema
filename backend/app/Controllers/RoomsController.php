@@ -19,7 +19,12 @@ class RoomsController extends Controller
     public function show($id): void // GET //
     {
         $room = $this->findOrFail(Rooms::class, $id, 'Room not found');
-        $this->jsonResponse($room);
+
+        $response = $room->jsonSerialize();
+        $response['screenings'] = $room->getScreenings();
+        $response['movies']     = $room->getMovies();
+
+        $this->jsonResponse($response);
     }
 
     #[NoReturn]

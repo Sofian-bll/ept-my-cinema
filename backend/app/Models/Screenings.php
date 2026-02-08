@@ -103,8 +103,7 @@ class Screenings extends Model
     /**
      * @throws \DateMalformedStringException
      */
-    public static function hasOverlap(int $roomId, string $startTime, int $movieId): bool
-
+    public static function hasOverlap(int $roomId, string $startTime, int $movieId, ?int $excludeId = null): bool
     {
         $movie         = Movies::find($movieId);
         $movieDuration = $movie->getDuration();
@@ -114,15 +113,23 @@ class Screenings extends Model
         // SQL REQUEST
         $database = self::getConnection();
 
-        $sql  = <<<SQL
-            SELECT COUNT(*)
+        $excludeClause = $excludeId !== null ? 'AND id != :exclude_id' : '';
+
+        $sql = "SELECT COUNT(*)
             FROM screenings
             WHERE room_id = :room_id
               AND :new_start < end_time
               AND :new_end > start_time
-            SQL;
+              {$excludeClause}";
+
+        $params = [ ':room_id' => $roomId, ':new_start' => $startTime, ':new_end' => $endTime ];
+
+        if ($excludeId !== null) {
+            $params[':exclude_id'] = $excludeId;
+        }
+
         $stmt = $database->prepare($sql);
-        $stmt->execute([ ':room_id' => $roomId, ':new_start' => $startTime, ':new_end' => $endTime ]);
+        $stmt->execute($params);
         $count = $stmt->fetchColumn();
 
         return $count > 0;

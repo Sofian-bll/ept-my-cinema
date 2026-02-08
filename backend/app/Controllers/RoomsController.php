@@ -32,7 +32,7 @@ class RoomsController extends Controller
     {
         $data = $this->getJsonBody();
 
-        $missing = ValidationHelper::required($data, [ 'name', 'capacity', 'type', 'active' ]);
+        $missing = ValidationHelper::required($data, [ 'name', 'capacity' ]);
         if (!empty($missing)) {
             $this->error('Missing required fields', 400, [ 'fields' => $missing ]);
         }
@@ -40,8 +40,8 @@ class RoomsController extends Controller
         $room = new Rooms();
         $room->setName($data['name']);
         $room->setCapacity($data['capacity']);
-        $room->setType((bool)$data['type']);
-        $room->setActive($data['active']);
+        $room->setType($data['type'] ?? null);
+        $room->setActive($data['active'] ?? true);
         $room->save();
 
         $this->jsonResponse('Room created', 201);
@@ -57,7 +57,7 @@ class RoomsController extends Controller
 
         $room->setName($data['name'] ?? $room->getName());
         $room->setCapacity($data['capacity'] ?? $room->getCapacity());
-        $room->setType((bool)($data['type'] ?? $room->getType()));
+        $room->setType($data['type'] ?? $room->getType());
         $room->setActive($data['active'] ?? $room->getActive());
         $room->save();
 

@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Cinema Dark Theme - Red/Gold Accents (Default) */
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
+    --card: 20 14.3% 6.1%;
+    --card-foreground: 60 9.1% 97.8%;
+    --popover: 20 14.3% 6.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+    --primary: 0 72.2% 50.6%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
+    --accent: 38 92% 50%;
+    --accent-foreground: 20 14.3% 4.1%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 0 72.2% 50.6%;
+    --radius: 0.5rem;
+
+    /* Chart Colors */
+    --chart-1: 0 72.2% 50.6%;
+    --chart-2: 38 92% 50%;
+    --chart-3: 43 74% 66%;
+    --chart-4: 27 87% 67%;
+    --chart-5: 12 76% 61%;
+
+    /* Sidebar - Dark theme matching main background */
+    --sidebar-background: 20 14.3% 4.1%;
+    --sidebar-foreground: 24 5.4% 63.9%;
+    --sidebar-primary: 0 72.2% 50.6%;
+    --sidebar-primary-foreground: 60 9.1% 97.8%;
+    --sidebar-accent: 12 6.5% 15.1%;
+    --sidebar-accent-foreground: 60 9.1% 97.8%;
+    --sidebar-border: 12 6.5% 15.1%;
+    --sidebar-ring: 0 72.2% 50.6%;
+  }
+
+  .light {
+    --background: 60 9.1% 97.8%;
+    --foreground: 20 14.3% 4.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 20 14.3% 4.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14.3% 4.1%;
+    --primary: 0 72.2% 50.6%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 12 6.5% 90%;
+    --secondary-foreground: 20 14.3% 4.1%;
+    --muted: 12 6.5% 90%;
+    --muted-foreground: 24 5.4% 40%;
+    --accent: 38 92% 50%;
+    --accent-foreground: 20 14.3% 4.1%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 12 6.5% 85%;
+    --input: 12 6.5% 85%;
+    --ring: 0 72.2% 50.6%;
+
+    /* Sidebar - Light theme */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 24 5.4% 40%;
+    --sidebar-primary: 0 72.2% 50.6%;
+    --sidebar-primary-foreground: 60 9.1% 97.8%;
+    --sidebar-accent: 12 6.5% 95%;
+    --sidebar-accent-foreground: 20 14.3% 4.1%;
+    --sidebar-border: 12 6.5% 90%;
+    --sidebar-ring: 0 72.2% 50.6%;
+  }
+
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
+    --card: 20 14.3% 6.1%;
+    --card-foreground: 60 9.1% 97.8%;
+    --popover: 20 14.3% 6.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+    --primary: 0 72.2% 50.6%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
+    --accent: 38 92% 50%;
+    --accent-foreground: 20 14.3% 4.1%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 0 72.2% 50.6%;
+
+    /* Sidebar - Dark theme */
+    --sidebar-background: 20 14.3% 4.1%;
+    --sidebar-foreground: 24 5.4% 63.9%;
+    --sidebar-primary: 0 72.2% 50.6%;
+    --sidebar-primary-foreground: 60 9.1% 97.8%;
+    --sidebar-accent: 12 6.5% 15.1%;
+    --sidebar-accent-foreground: 60 9.1% 97.8%;
+    --sidebar-border: 12 6.5% 15.1%;
+    --sidebar-ring: 0 72.2% 50.6%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Custom scrollbar for cinema theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.7);
+}
+
+/* Animation utilities */
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

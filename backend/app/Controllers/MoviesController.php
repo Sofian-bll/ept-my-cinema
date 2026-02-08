@@ -32,18 +32,18 @@ class MoviesController extends Controller
     {
         $data = $this->getJsonBody();
 
-        $missing = ValidationHelper::required($data, ['title', 'description', 'director', 'duration', 'release_year', 'genre']);
+        $missing = ValidationHelper::required($data, ['title', 'duration', 'release_year']);
         if (!empty($missing)) {
             $this->error('Missing required fields', 400, ['fields' => $missing]);
         }
 
         $movie = new Movies();
         $movie->setTitle($data['title']);
-        $movie->setDescription($data['description']);
-        $movie->setDirector($data['director']);
+        $movie->setDescription($data['description'] ?? null);
+        $movie->setDirector($data['director'] ?? null);
         $movie->setDuration($data['duration']);
         $movie->setReleaseYear($data['release_year']);
-        $movie->setGenre($data['genre']);
+        $movie->setGenre($data['genre'] ?? null);
         $movie->save();
 
         $this->jsonResponse('Movie created', 201);

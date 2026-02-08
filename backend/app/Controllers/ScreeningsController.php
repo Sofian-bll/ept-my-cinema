@@ -76,7 +76,7 @@ class ScreeningsController extends Controller
         $movie = $this->findOrFail(Movies::class, $data['movies_id'], 'Movie not found');
         $this->findOrFail(Rooms::class, $data['room_id'], 'Room not found');
 
-        if (Screenings::hasOverlap($data['room_id'], $data['start_time'], $data['movies_id'])) {
+        if (Screenings::hasOverlap($data['room_id'], $data['start_time'], $data['movies_id'], (int)$id)) {
             $this->error('Screening overlaps with existing screening in this room', 409);
         }
 

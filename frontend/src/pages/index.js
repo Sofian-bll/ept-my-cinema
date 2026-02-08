@@ -1,0 +1,5 @@
+export { default as DashboardPage } from './DashboardPage.vue'
+export { default as MoviesPage } from './MoviesPage.vue'
+export { default as RoomsPage } from './RoomsPage.vue'
+export { default as ScreeningsPage } from './ScreeningsPage.vue'
+export { default as SettingsPage } from './SettingsPage.vue'

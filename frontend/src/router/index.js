@@ -1,15 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
-// Import pages
 import DashboardPage from '@/pages/DashboardPage.vue'
 import MoviesPage from '@/pages/MoviesPage.vue'
 import RoomsPage from '@/pages/RoomsPage.vue'
 import ScreeningsPage from '@/pages/ScreeningsPage.vue'
 import SettingsPage from '@/pages/SettingsPage.vue'
 
-/**
- * Route
- */
 const routes = [
   {
     path: '/',
@@ -56,15 +51,11 @@ const routes = [
     }
   },
   {
-    // Catch-all 404
     path: '/:pathMatch(.*)*',
     redirect: '/dashboard'
   }
 ]
 
-/**
- * Create Vue Router
- */
 const router = createRouter({
   history: createWebHistory(),
   routes,
@@ -76,9 +67,6 @@ const router = createRouter({
   }
 })
 
-/**
- * Update document title on navigation
- */
 router.beforeEach((to, from, next) => {
   const title = to.meta?.title || 'My Cinema'
   document.title = `${title} | My Cinema`

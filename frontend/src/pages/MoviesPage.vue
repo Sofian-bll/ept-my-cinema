@@ -25,44 +25,28 @@ const deleteDialogOpen = ref(false)
 const selectedMovie = ref(null)
 const formLoading = ref(false)
 
-/**
- * Open form for creating new movie
- */
 function handleAdd() {
   selectedMovie.value = null
   formOpen.value = true
 }
 
-/**
- * Open form for editing movie
- */
 function handleEdit(movie) {
   selectedMovie.value = movie
   formOpen.value = true
 }
 
-/**
- * Open delete confirmation
- */
 function handleDelete(movie) {
   selectedMovie.value = movie
   deleteDialogOpen.value = true
 }
 
-/**
- * View movie details
- */
 function handleView(movie) {
   selectedMovie.value = movie
-  // Could open a detail modal here
   toast.info(`Viewing: ${movie.title}`, {
     description: `${movie.release_year} • ${movie.duration} minutes`
   })
 }
 
-/**
- * Submit movie form (create or update)
- */
 async function handleSubmit(data) {
   formLoading.value = true
   try {
@@ -87,9 +71,6 @@ async function handleSubmit(data) {
   }
 }
 
-/**
- * Confirm delete movie
- */
 async function confirmDelete() {
   if (!selectedMovie.value) return
   
@@ -114,7 +95,6 @@ onMounted(() => {
 <template>
   <AppLayout>
     <div class="space-y-6">
-      <!-- Page Header -->
       <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 class="text-3xl font-bold tracking-tight flex items-center gap-2">
@@ -131,7 +111,6 @@ onMounted(() => {
         </Button>
       </div>
 
-      <!-- Movies Table -->
       <MovieTable
         :data="movies"
         :loading="loading"
@@ -140,7 +119,6 @@ onMounted(() => {
         @view="handleView"
       />
 
-      <!-- Movie Form Dialog -->
       <MovieForm
         v-model:open="formOpen"
         :movie="selectedMovie"
@@ -148,7 +126,6 @@ onMounted(() => {
         @submit="handleSubmit"
       />
 
-      <!-- Delete Confirmation Dialog -->
       <AlertDialog v-model:open="deleteDialogOpen">
         <AlertDialogContent>
           <AlertDialogHeader>

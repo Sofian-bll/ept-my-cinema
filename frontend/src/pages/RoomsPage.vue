@@ -25,33 +25,21 @@ const deleteDialogOpen = ref(false)
 const selectedRoom = ref(null)
 const formLoading = ref(false)
 
-/**
- * Open form for creating new room
- */
 function handleAdd() {
   selectedRoom.value = null
   formOpen.value = true
 }
 
-/**
- * Open form for editing room
- */
 function handleEdit(room) {
   selectedRoom.value = room
   formOpen.value = true
 }
 
-/**
- * Open delete confirmation
- */
 function handleDelete(room) {
   selectedRoom.value = room
   deleteDialogOpen.value = true
 }
 
-/**
- * View room screenings
- */
 function handleView(room) {
   selectedRoom.value = room
   toast.info(`${room.name}`, {
@@ -59,9 +47,6 @@ function handleView(room) {
   })
 }
 
-/**
- * Submit room form (create or update)
- */
 async function handleSubmit(data) {
   formLoading.value = true
   try {
@@ -86,9 +71,6 @@ async function handleSubmit(data) {
   }
 }
 
-/**
- * Confirm delete room
- */
 async function confirmDelete() {
   if (!selectedRoom.value) return
   
@@ -113,7 +95,6 @@ onMounted(() => {
 <template>
   <AppLayout>
     <div class="space-y-6">
-      <!-- Page Header -->
       <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 class="text-3xl font-bold tracking-tight flex items-center gap-2">
@@ -130,7 +111,6 @@ onMounted(() => {
         </Button>
       </div>
 
-      <!-- Rooms Table -->
       <RoomTable
         :data="rooms"
         :loading="loading"
@@ -139,7 +119,6 @@ onMounted(() => {
         @view="handleView"
       />
 
-      <!-- Room Form Dialog -->
       <RoomForm
         v-model:open="formOpen"
         :room="selectedRoom"
@@ -147,7 +126,6 @@ onMounted(() => {
         @submit="handleSubmit"
       />
 
-      <!-- Delete Confirmation Dialog -->
       <AlertDialog v-model:open="deleteDialogOpen">
         <AlertDialogContent>
           <AlertDialogHeader>

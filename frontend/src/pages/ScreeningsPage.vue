@@ -29,41 +29,26 @@ const selectedScreening = ref(null)
 const formLoading = ref(false)
 const activeTab = ref('table')
 
-/**
- * Open form for creating new screening
- */
 function handleAdd() {
   selectedScreening.value = null
   formOpen.value = true
 }
 
-/**
- * Open form for editing screening
- */
 function handleEdit(screening) {
   selectedScreening.value = screening
   formOpen.value = true
 }
 
-/**
- * Open delete confirmation
- */
 function handleDelete(screening) {
   selectedScreening.value = screening
   deleteDialogOpen.value = true
 }
 
-/**
- * Get movie title by ID
- */
 function getMovieTitle(movieId) {
   const movie = movies.value.find(m => m.id === movieId)
   return movie?.title || 'Unknown Movie'
 }
 
-/**
- * Submit screening form (create or update)
- */
 async function handleSubmit(data) {
   formLoading.value = true
   try {
@@ -80,7 +65,6 @@ async function handleSubmit(data) {
     }
     formOpen.value = false
   } catch (err) {
-    // Handle overlap error specifically
     if (err.status === 409) {
       toast.error('Scheduling Conflict', {
         description: 'This time slot conflicts with an existing screening in this room. Please choose a different time.',
@@ -96,9 +80,6 @@ async function handleSubmit(data) {
   }
 }
 
-/**
- * Confirm delete screening
- */
 async function confirmDelete() {
   if (!selectedScreening.value) return
   
@@ -127,7 +108,6 @@ onMounted(async () => {
 <template>
   <AppLayout>
     <div class="space-y-6">
-      <!-- Page Header -->
       <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 class="text-3xl font-bold tracking-tight flex items-center gap-2">
@@ -144,7 +124,6 @@ onMounted(async () => {
         </Button>
       </div>
 
-      <!-- View Tabs -->
       <Tabs v-model="activeTab" class="w-full">
         <TabsList>
           <TabsTrigger value="table">
@@ -181,7 +160,6 @@ onMounted(async () => {
         </TabsContent>
       </Tabs>
 
-      <!-- Screening Form Dialog -->
       <ScreeningForm
         v-model:open="formOpen"
         :screening="selectedScreening"
@@ -191,7 +169,6 @@ onMounted(async () => {
         @submit="handleSubmit"
       />
 
-      <!-- Delete Confirmation Dialog -->
       <AlertDialog v-model:open="deleteDialogOpen">
         <AlertDialogContent>
           <AlertDialogHeader>

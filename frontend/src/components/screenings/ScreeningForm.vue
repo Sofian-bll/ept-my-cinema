@@ -63,17 +63,11 @@ const form = ref({
 
 const errors = ref({})
 
-/**
- * Get selected movie
- */
 const selectedMovie = computed(() => {
   if (!form.value.movies_id) return null
   return props.movies.find(m => m.id.toString() === form.value.movies_id)
 })
 
-/**
- * Calculate end time based on start time and movie duration
- */
 const calculatedEndTime = computed(() => {
   if (!form.value.date || !form.value.time || !selectedMovie.value) return null
   
@@ -87,7 +81,6 @@ const calculatedEndTime = computed(() => {
   })
 })
 
-// Reset form when dialog opens/closes or screening changes
 watch(() => [props.open, props.screening], ([open, screening]) => {
   if (open && screening) {
     const startTime = new Date(screening.start_time)
@@ -99,7 +92,7 @@ watch(() => [props.open, props.screening], ([open, screening]) => {
     }
   } else if (open && !screening) {
     const now = new Date()
-    now.setHours(now.getHours() + 1, 0, 0, 0) // Next hour
+    now.setHours(now.getHours() + 1, 0, 0, 0)
     form.value = {
       movies_id: '',
       room_id: '',
@@ -110,10 +103,6 @@ watch(() => [props.open, props.screening], ([open, screening]) => {
   errors.value = {}
 }, { immediate: true })
 
-/**
- * Validate form fields
- * @returns {boolean}
- */
 function validate() {
   errors.value = {}
   
@@ -136,9 +125,6 @@ function validate() {
   return Object.keys(errors.value).length === 0
 }
 
-/**
- * Handle form submission
- */
 function handleSubmit() {
   if (!validate()) return
   
@@ -171,7 +157,6 @@ function handleSubmit() {
       </DialogHeader>
 
       <form @submit.prevent="handleSubmit" class="space-y-4">
-        <!-- Movie Selection -->
         <div class="space-y-2">
           <Label for="movie">Movie *</Label>
           <Select v-model="form.movies_id">
@@ -193,14 +178,12 @@ function handleSubmit() {
           </Select>
           <p v-if="errors.movies_id" class="text-sm text-destructive">{{ errors.movies_id }}</p>
           
-          <!-- Selected movie info -->
           <div v-if="selectedMovie" class="flex items-center gap-2 text-sm text-muted-foreground">
             <Clock class="h-4 w-4" />
             <span>Duration: {{ formatDuration(selectedMovie.duration) }}</span>
           </div>
         </div>
 
-        <!-- Room Selection -->
         <div class="space-y-2">
           <Label for="room">Room *</Label>
           <Select v-model="form.room_id">
@@ -225,7 +208,6 @@ function handleSubmit() {
           <p v-if="errors.room_id" class="text-sm text-destructive">{{ errors.room_id }}</p>
         </div>
 
-        <!-- Date & Time -->
         <div class="grid grid-cols-2 gap-4">
           <div class="space-y-2">
             <Label for="date">Date *</Label>
@@ -250,7 +232,6 @@ function handleSubmit() {
           </div>
         </div>
 
-        <!-- End Time Preview -->
         <div v-if="calculatedEndTime" class="rounded-lg bg-muted/50 p-3">
           <div class="flex items-center gap-2 text-sm">
             <Clock class="h-4 w-4 text-primary" />
@@ -259,7 +240,6 @@ function handleSubmit() {
           </div>
         </div>
 
-        <!-- Warning about overlaps -->
         <div class="flex items-start gap-2 rounded-lg border border-amber-500/50 bg-amber-500/10 p-3 text-sm">
           <AlertCircle class="h-4 w-4 text-amber-500 mt-0.5" />
           <p class="text-muted-foreground">

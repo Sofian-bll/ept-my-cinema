@@ -49,7 +49,6 @@ const form = ref({
 
 const errors = ref({})
 
-// Reset form when dialog opens/closes or movie changes
 watch(() => [props.open, props.movie], ([open, movie]) => {
   if (open && movie) {
     form.value = {
@@ -73,10 +72,6 @@ watch(() => [props.open, props.movie], ([open, movie]) => {
   errors.value = {}
 }, { immediate: true })
 
-/**
- * Validate form fields
- * @returns {boolean}
- */
 function validate() {
   errors.value = {}
   
@@ -102,9 +97,6 @@ function validate() {
   return Object.keys(errors.value).length === 0
 }
 
-/**
- * Handle form submission
- */
 function handleSubmit() {
   if (!validate()) return
   
@@ -138,7 +130,6 @@ function handleSubmit() {
       </DialogHeader>
 
       <form @submit.prevent="handleSubmit" class="space-y-4">
-        <!-- Title -->
         <div class="space-y-2">
           <Label for="title">Title *</Label>
           <Input
@@ -150,7 +141,6 @@ function handleSubmit() {
           <p v-if="errors.title" class="text-sm text-destructive">{{ errors.title }}</p>
         </div>
 
-        <!-- Duration & Release Year (side by side) -->
         <div class="grid grid-cols-2 gap-4">
           <div class="space-y-2">
             <Label for="duration">Duration (minutes) *</Label>
@@ -180,7 +170,6 @@ function handleSubmit() {
           </div>
         </div>
 
-        <!-- Genre -->
         <div class="space-y-2">
           <Label for="genre">Genre</Label>
           <Input
@@ -191,7 +180,6 @@ function handleSubmit() {
           <p class="text-xs text-muted-foreground">Separate multiple genres with commas</p>
         </div>
 
-        <!-- Director -->
         <div class="space-y-2">
           <Label for="director">Director</Label>
           <Input
@@ -201,7 +189,6 @@ function handleSubmit() {
           />
         </div>
 
-        <!-- Description -->
         <div class="space-y-2">
           <Label for="description">Description</Label>
           <Textarea

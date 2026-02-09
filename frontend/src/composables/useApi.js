@@ -1,34 +1,16 @@
 import { ref, readonly } from 'vue'
 
-/** @type {string} Base URL for the API server */
 const API_BASE_URL = 'http://localhost:8000'
 
-/**
- * Generic API composable for making HTTP requests
- * Uses the path query parameter routing format: /?path=/api/endpoint
- * @returns {Object} API utilities
- */
 export function useApi() {
   const loading = ref(false)
   const error = ref(null)
 
-  /**
-   * Build the full URL with path query parameter
-   * @param {string} endpoint - API endpoint (e.g., '/movies' or '/movies/1')
-   * @returns {string} Full URL with path parameter
-   */
   function buildUrl(endpoint) {
-    // Ensure endpoint starts with /api
     const apiPath = endpoint.startsWith('/api') ? endpoint : `/api${endpoint}`
     return `${API_BASE_URL}/?path=${apiPath}`
   }
 
-  /**
-   * Make an HTTP request
-   * @param {string} endpoint - API endpoint (e.g., '/movies' or '/movies/1')
-   * @param {Object} options - Fetch options
-   * @returns {Promise<any>} Response data
-   */
   async function request(endpoint, options = {}) {
     loading.value = true
     error.value = null
@@ -49,7 +31,6 @@ export function useApi() {
 
       const response = await fetch(url, config)
       
-      // Handle empty responses (204 No Content)
       if (response.status === 204) {
         return null
       }
@@ -81,40 +62,18 @@ export function useApi() {
     }
   }
 
-  /**
-   * GET request
-   * @param {string} endpoint - API endpoint (e.g., '/movies')
-   * @returns {Promise<any>}
-   */
   function get(endpoint) {
     return request(endpoint, { method: 'GET' })
   }
 
-  /**
-   * POST request
-   * @param {string} endpoint - API endpoint
-   * @param {Object} body - Request body
-   * @returns {Promise<any>}
-   */
   function post(endpoint, body) {
     return request(endpoint, { method: 'POST', body })
   }
 
-  /**
-   * PUT request
-   * @param {string} endpoint - API endpoint
-   * @param {Object} body - Request body
-   * @returns {Promise<any>}
-   */
   function put(endpoint, body) {
     return request(endpoint, { method: 'PUT', body })
   }
 
-  /**
-   * DELETE request
-   * @param {string} endpoint - API endpoint
-   * @returns {Promise<any>}
-   */
   function del(endpoint) {
     return request(endpoint, { method: 'DELETE' })
   }
@@ -130,12 +89,6 @@ export function useApi() {
   }
 }
 
-/**
- * Get user-friendly error message based on status code
- * @param {Object} error - Error object
- * @param {string} entity - Entity name (e.g., 'movie', 'room')
- * @returns {string} User-friendly message
- */
 export function getErrorMessage(error, entity = 'item') {
   if (!error) return 'An unknown error occurred'
 

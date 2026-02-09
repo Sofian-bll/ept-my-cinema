@@ -153,7 +153,6 @@ const pageCount = computed(() => table.getPageCount())
 
 <template>
   <div class="space-y-4">
-    <!-- Search -->
     <div class="flex items-center gap-2">
       <div class="relative flex-1 max-w-sm">
         <Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -165,7 +164,6 @@ const pageCount = computed(() => table.getPageCount())
       </div>
     </div>
 
-    <!-- Table -->
     <div class="rounded-md border">
       <Table>
         <TableHeader>
@@ -180,7 +178,6 @@ const pageCount = computed(() => table.getPageCount())
           </TableRow>
         </TableHeader>
         <TableBody>
-          <!-- Loading state -->
           <template v-if="loading">
             <TableRow v-for="i in 5" :key="i">
               <TableCell v-for="j in columns.length" :key="j">
@@ -189,7 +186,6 @@ const pageCount = computed(() => table.getPageCount())
             </TableRow>
           </template>
           
-          <!-- Data rows -->
           <template v-else-if="table.getRowModel().rows?.length">
             <TableRow
               v-for="row in table.getRowModel().rows"
@@ -205,7 +201,6 @@ const pageCount = computed(() => table.getPageCount())
             </TableRow>
           </template>
           
-          <!-- Empty state -->
           <TableEmpty v-else :colspan="columns.length">
             No rooms found.
           </TableEmpty>
@@ -213,7 +208,6 @@ const pageCount = computed(() => table.getPageCount())
       </Table>
     </div>
 
-    <!-- Pagination -->
     <div class="flex items-center justify-between">
       <div class="text-sm text-muted-foreground">
         {{ table.getFilteredRowModel().rows.length }} room(s) total

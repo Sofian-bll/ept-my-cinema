@@ -15,9 +15,6 @@ import ThemeToggle from './ThemeToggle.vue'
 
 const route = useRoute()
 
-/**
- * Generate breadcrumb items from current route
- */
 const breadcrumbs = computed(() => {
   const segments = route.path.split('/').filter(Boolean)
   const items = []

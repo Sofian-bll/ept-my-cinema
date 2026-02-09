@@ -34,7 +34,6 @@ const { screenings, todayScreenings, upcomingScreenings, fetchAll: fetchScreenin
 
 const loading = computed(() => moviesLoading.value || roomsLoading.value || screeningsLoading.value)
 
-// Stats
 const stats = computed(() => [
   {
     title: 'Total Movies',
@@ -66,23 +65,14 @@ const stats = computed(() => [
   }
 ])
 
-/**
- * Get movie by ID
- */
 function getMovie(movieId) {
   return movies.value.find(m => m.id === movieId)
 }
 
-/**
- * Get room by ID
- */
 function getRoom(roomId) {
   return rooms.value.find(r => r.id === roomId)
 }
 
-/**
- * Get recent movies (last 5 added)
- */
 const recentMovies = computed(() => {
   return [...movies.value]
     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
@@ -101,7 +91,6 @@ onMounted(async () => {
 <template>
   <AppLayout>
     <div class="space-y-6">
-      <!-- Page Header -->
       <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 class="text-3xl font-bold tracking-tight">Dashboard</h1>
@@ -121,7 +110,6 @@ onMounted(async () => {
         </div>
       </div>
 
-      <!-- Stats Grid -->
       <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card v-for="stat in stats" :key="stat.title">
           <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -140,9 +128,7 @@ onMounted(async () => {
         </Card>
       </div>
 
-      <!-- Content Grid -->
       <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <!-- Upcoming Screenings -->
         <Card class="lg:col-span-4">
           <CardHeader>
             <div class="flex items-center justify-between">
@@ -198,7 +184,6 @@ onMounted(async () => {
           </CardContent>
         </Card>
 
-        <!-- Recent Movies -->
         <Card class="lg:col-span-3">
           <CardHeader>
             <div class="flex items-center justify-between">
@@ -248,7 +233,6 @@ onMounted(async () => {
         </Card>
       </div>
 
-      <!-- Rooms Overview -->
       <Card>
         <CardHeader>
           <div class="flex items-center justify-between">

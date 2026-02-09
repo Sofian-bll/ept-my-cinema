@@ -55,7 +55,6 @@ const form = ref({
 
 const errors = ref({})
 
-// Reset form when dialog opens/closes or room changes
 watch(() => [props.open, props.room], ([open, room]) => {
   if (open && room) {
     form.value = {
@@ -73,10 +72,6 @@ watch(() => [props.open, props.room], ([open, room]) => {
   errors.value = {}
 }, { immediate: true })
 
-/**
- * Validate form fields
- * @returns {boolean}
- */
 function validate() {
   errors.value = {}
   
@@ -93,9 +88,6 @@ function validate() {
   return Object.keys(errors.value).length === 0
 }
 
-/**
- * Handle form submission
- */
 function handleSubmit() {
   if (!validate()) return
   
@@ -126,7 +118,6 @@ function handleSubmit() {
       </DialogHeader>
 
       <form @submit.prevent="handleSubmit" class="space-y-4">
-        <!-- Name -->
         <div class="space-y-2">
           <Label for="name">Name *</Label>
           <Input
@@ -138,7 +129,6 @@ function handleSubmit() {
           <p v-if="errors.name" class="text-sm text-destructive">{{ errors.name }}</p>
         </div>
 
-        <!-- Capacity -->
         <div class="space-y-2">
           <Label for="capacity">Capacity (seats) *</Label>
           <Input
@@ -152,7 +142,6 @@ function handleSubmit() {
           <p v-if="errors.capacity" class="text-sm text-destructive">{{ errors.capacity }}</p>
         </div>
 
-        <!-- Type -->
         <div class="space-y-2">
           <Label for="type">Room Type</Label>
           <Select v-model="form.type">

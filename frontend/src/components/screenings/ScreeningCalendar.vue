@@ -52,13 +52,10 @@ const emit = defineEmits(['edit', 'delete', 'add'])
 const currentDate = ref(new Date())
 const selectedRoomId = ref('all')
 
-/**
- * Get current week dates
- */
 const weekDates = computed(() => {
   const dates = []
   const startOfWeek = new Date(currentDate.value)
-  startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1) // Monday
+  startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1)
   
   for (let i = 0; i < 7; i++) {
     const date = new Date(startOfWeek)
@@ -68,9 +65,6 @@ const weekDates = computed(() => {
   return dates
 })
 
-/**
- * Format date for display
- */
 function formatWeekDate(date) {
   return date.toLocaleDateString('en-US', {
     weekday: 'short',
@@ -79,17 +73,11 @@ function formatWeekDate(date) {
   })
 }
 
-/**
- * Check if date is today
- */
 function isToday(date) {
   const today = new Date()
   return date.toDateString() === today.toDateString()
 }
 
-/**
- * Get screenings for a specific date and room
- */
 function getScreeningsForDate(date) {
   const dateStr = date.toISOString().split('T')[0]
   return props.screenings
@@ -101,48 +89,30 @@ function getScreeningsForDate(date) {
     .sort((a, b) => new Date(a.start_time) - new Date(b.start_time))
 }
 
-/**
- * Get movie by ID
- */
 function getMovie(movieId) {
   return props.movies.find(m => m.id === movieId)
 }
 
-/**
- * Get room by ID
- */
 function getRoom(roomId) {
   return props.rooms.find(r => r.id === roomId)
 }
 
-/**
- * Navigate to previous week
- */
 function previousWeek() {
   const newDate = new Date(currentDate.value)
   newDate.setDate(newDate.getDate() - 7)
   currentDate.value = newDate
 }
 
-/**
- * Navigate to next week
- */
 function nextWeek() {
   const newDate = new Date(currentDate.value)
   newDate.setDate(newDate.getDate() + 7)
   currentDate.value = newDate
 }
 
-/**
- * Go to today
- */
 function goToToday() {
   currentDate.value = new Date()
 }
 
-/**
- * Week range display
- */
 const weekRangeDisplay = computed(() => {
   const start = weekDates.value[0]
   const end = weekDates.value[6]
@@ -156,9 +126,6 @@ const weekRangeDisplay = computed(() => {
   return `${start.getDate()} ${startMonth} - ${end.getDate()} ${endMonth} ${year}`
 })
 
-/**
- * Get screening status
- */
 function getScreeningStatus(screening) {
   const startTime = new Date(screening.start_time)
   const endTime = new Date(screening.end_time)
@@ -172,7 +139,6 @@ function getScreeningStatus(screening) {
 
 <template>
   <div class="space-y-4">
-    <!-- Calendar Navigation -->
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
       <div class="flex items-center gap-2">
         <Button variant="outline" size="icon" @click="previousWeek">
@@ -188,7 +154,6 @@ function getScreeningStatus(screening) {
         <span class="ml-2 font-medium">{{ weekRangeDisplay }}</span>
       </div>
       
-      <!-- Room Filter -->
       <div class="flex items-center gap-2">
         <span class="text-sm text-muted-foreground">Filter by room:</span>
         <Select v-model="selectedRoomId">
@@ -205,7 +170,6 @@ function getScreeningStatus(screening) {
       </div>
     </div>
 
-    <!-- Week Grid -->
     <div class="grid grid-cols-7 gap-2">
       <Card
         v-for="date in weekDates"
@@ -236,24 +200,20 @@ function getScreeningStatus(screening) {
                   'border-muted': getScreeningStatus(screening) === 'completed'
                 }"
               >
-                <!-- Time -->
                 <div class="flex items-center gap-1 text-muted-foreground mb-1">
                   <Clock class="h-3 w-3" />
                   {{ formatTime(screening.start_time) }} - {{ formatTime(screening.end_time) }}
                 </div>
                 
-                <!-- Movie -->
                 <div class="font-medium truncate mb-1">
                   {{ getMovie(screening.movies_id)?.title || 'Unknown' }}
                 </div>
                 
-                <!-- Room -->
                 <div class="flex items-center gap-1 text-muted-foreground">
                   <DoorOpen class="h-3 w-3" />
                   {{ getRoom(screening.room_id)?.name || 'Unknown' }}
                 </div>
                 
-                <!-- Actions (show on hover) -->
                 <div class="hidden group-hover:flex items-center gap-1 mt-2 pt-2 border-t">
                   <Button 
                     variant="ghost" 
@@ -275,7 +235,6 @@ function getScreeningStatus(screening) {
                 </div>
               </div>
               
-              <!-- Empty state for this day -->
               <div 
                 v-if="!getScreeningsForDate(date).length"
                 class="flex flex-col items-center justify-center h-full min-h-[100px] text-muted-foreground text-xs text-center"
@@ -289,7 +248,6 @@ function getScreeningStatus(screening) {
       </Card>
     </div>
 
-    <!-- Legend -->
     <div class="flex items-center gap-4 text-xs text-muted-foreground">
       <div class="flex items-center gap-2">
         <div class="h-3 w-3 rounded-full bg-green-500/50" />

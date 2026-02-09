@@ -1,31 +1,16 @@
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
-/**
- * Combines clsx and tailwind-merge for conditional class names
- * @param  {...any} inputs - Class names or conditional objects
- * @returns {string} Merged class string
- */
 export function cn(...inputs) {
   return twMerge(clsx(inputs))
 }
 
-/**
- * Helper for TanStack Table state updates
- * @param {Function|any} updaterOrValue - Either a function or a value
- * @param {import('vue').Ref} ref - Vue ref to update
- */
 export function valueUpdater(updaterOrValue, ref) {
   ref.value = typeof updaterOrValue === 'function'
     ? updaterOrValue(ref.value)
     : updaterOrValue
 }
 
-/**
- * Format duration in minutes to human readable format
- * @param {number} minutes - Duration in minutes
- * @returns {string} Formatted duration (e.g., "2h 22min")
- */
 export function formatDuration(minutes) {
   if (!minutes) return '-'
   const hours = Math.floor(minutes / 60)
@@ -35,12 +20,6 @@ export function formatDuration(minutes) {
   return `${hours}h ${mins}min`
 }
 
-/**
- * Format date to locale string
- * @param {string} dateString - ISO date string
- * @param {object} options - Intl.DateTimeFormat options
- * @returns {string} Formatted date
- */
 export function formatDate(dateString, options = {}) {
   if (!dateString) return '-'
   const defaultOptions = {
@@ -52,11 +31,6 @@ export function formatDate(dateString, options = {}) {
   return new Date(dateString).toLocaleDateString('en-US', defaultOptions)
 }
 
-/**
- * Format datetime to locale string
- * @param {string} dateString - ISO datetime string
- * @returns {string} Formatted datetime
- */
 export function formatDateTime(dateString) {
   if (!dateString) return '-'
   return new Date(dateString).toLocaleString('en-US', {
@@ -68,11 +42,6 @@ export function formatDateTime(dateString) {
   })
 }
 
-/**
- * Format time only from datetime string
- * @param {string} dateString - ISO datetime string
- * @returns {string} Formatted time (e.g., "14:30")
- */
 export function formatTime(dateString) {
   if (!dateString) return '-'
   return new Date(dateString).toLocaleTimeString('en-US', {
@@ -82,11 +51,6 @@ export function formatTime(dateString) {
   })
 }
 
-/**
- * Get room type badge variant
- * @param {string} type - Room type
- * @returns {string} Badge variant
- */
 export function getRoomTypeVariant(type) {
   const variants = {
     'Standard': 'secondary',
@@ -99,12 +63,6 @@ export function getRoomTypeVariant(type) {
   return variants[type] || 'secondary'
 }
 
-/**
- * Debounce function
- * @param {Function} fn - Function to debounce
- * @param {number} delay - Delay in milliseconds
- * @returns {Function} Debounced function
- */
 export function debounce(fn, delay = 300) {
   let timeoutId
   return (...args) => {

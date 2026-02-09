@@ -1,23 +1,6 @@
 import { ref, readonly } from 'vue'
 import { useApi, getErrorMessage } from './useApi'
 
-/**
- * @typedef {Object} Room
- * @property {number} id
- * @property {string} name
- * @property {number} capacity
- * @property {string|null} type - Standard, Premium, IMAX, VIP, 4DX, Dolby Atmos
- * @property {boolean} active
- * @property {string} created_at
- * @property {string} updated_at
- * @property {Array} [screenings] - Available when fetching single room
- * @property {Array} [movies] - Available when fetching single room
- */
-
-/**
- * Rooms CRUD composable
- * @returns {Object} Rooms API methods
- */
 export function useRooms() {
   const api = useApi()
   const rooms = ref([])
@@ -25,7 +8,6 @@ export function useRooms() {
   const loading = ref(false)
   const error = ref(null)
 
-  /** @type {string[]} Available room types */
   const roomTypes = [
     'Standard',
     'Premium',
@@ -35,11 +17,6 @@ export function useRooms() {
     'Dolby Atmos'
   ]
 
-  /**
-   * Fetch all active rooms
-   * Note: API only returns active rooms
-   * @returns {Promise<Room[]>}
-   */
   async function fetchAll() {
     loading.value = true
     error.value = null
@@ -55,11 +32,6 @@ export function useRooms() {
     }
   }
 
-  /**
-   * Fetch single room by ID (includes screenings and movies)
-   * @param {number} id - Room ID
-   * @returns {Promise<Room>}
-   */
   async function fetchById(id) {
     loading.value = true
     error.value = null
@@ -75,20 +47,12 @@ export function useRooms() {
     }
   }
 
-  /**
-   * Create a new room
-   * @param {Object} roomData - Room data
-   * @param {string} roomData.name - Required
-   * @param {number} roomData.capacity - Required
-   * @param {string} [roomData.type] - Room type
-   * @returns {Promise<Room>}
-   */
   async function create(roomData) {
     loading.value = true
     error.value = null
     try {
       const data = await api.post('/rooms', roomData)
-      await fetchAll() // Refresh list
+      await fetchAll()
       return data
     } catch (err) {
       error.value = getErrorMessage(err, 'room')
@@ -98,18 +62,12 @@ export function useRooms() {
     }
   }
 
-  /**
-   * Update an existing room
-   * @param {number} id - Room ID
-   * @param {Object} roomData - Updated room data
-   * @returns {Promise<Room>}
-   */
   async function update(id, roomData) {
     loading.value = true
     error.value = null
     try {
       const data = await api.put(`/rooms/${id}`, roomData)
-      await fetchAll() // Refresh list
+      await fetchAll()
       return data
     } catch (err) {
       error.value = getErrorMessage(err, 'room')
@@ -119,19 +77,12 @@ export function useRooms() {
     }
   }
 
-  /**
-   * Delete a room (soft delete - sets active=false)
-   * Note: Will fail with 409 if room has screenings
-   * Note: Will fail with 410 if room is already inactive
-   * @param {number} id - Room ID
-   * @returns {Promise<void>}
-   */
   async function remove(id) {
     loading.value = true
     error.value = null
     try {
       await api.del(`/rooms/${id}`)
-      await fetchAll() // Refresh list
+      await fetchAll()
     } catch (err) {
       error.value = getErrorMessage(err, 'room')
       throw err

@@ -56,11 +56,6 @@ const settingsNavItems = [
   }
 ]
 
-/**
- * Check if a route is active
- * @param {string} url - Route URL
- * @returns {boolean}
- */
 function isActive(url) {
   return route.path === url || route.path.startsWith(url + '/')
 }

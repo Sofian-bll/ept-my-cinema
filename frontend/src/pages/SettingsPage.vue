@@ -18,7 +18,6 @@ import { Settings, Database, Palette, Info } from 'lucide-vue-next'
 <template>
   <AppLayout>
     <div class="space-y-6">
-      <!-- Page Header -->
       <div>
         <h1 class="text-3xl font-bold tracking-tight flex items-center gap-2">
           <Settings class="h-8 w-8 text-primary" />
@@ -30,7 +29,6 @@ import { Settings, Database, Palette, Info } from 'lucide-vue-next'
       </div>
 
       <div class="grid gap-6">
-        <!-- API Configuration -->
         <Card>
           <CardHeader>
             <CardTitle class="flex items-center gap-2">
@@ -62,7 +60,6 @@ import { Settings, Database, Palette, Info } from 'lucide-vue-next'
           </CardContent>
         </Card>
 
-        <!-- Theme Settings -->
         <Card>
           <CardHeader>
             <CardTitle class="flex items-center gap-2">
@@ -111,7 +108,6 @@ import { Settings, Database, Palette, Info } from 'lucide-vue-next'
           </CardContent>
         </Card>
 
-        <!-- About -->
         <Card>
           <CardHeader>
             <CardTitle class="flex items-center gap-2">

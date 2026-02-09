@@ -21,9 +21,6 @@ const props = defineProps({
 
 const emit = defineEmits(['edit', 'delete'])
 
-/**
- * Get genre badges from comma-separated string
- */
 function getGenres(genreString) {
   if (!genreString) return []
   return genreString.split(',').map(g => g.trim()).filter(Boolean)
@@ -46,13 +43,11 @@ function getGenres(genreString) {
     </CardHeader>
 
     <CardContent class="space-y-3">
-      <!-- Duration -->
       <div class="flex items-center gap-2 text-sm text-muted-foreground">
         <Clock class="h-4 w-4" />
         <span>{{ formatDuration(movie.duration) }}</span>
       </div>
 
-      <!-- Genres -->
       <div v-if="movie.genre" class="flex flex-wrap gap-1">
         <Badge
           v-for="genre in getGenres(movie.genre)"
@@ -64,7 +59,6 @@ function getGenres(genreString) {
         </Badge>
       </div>
 
-      <!-- Description -->
       <p v-if="movie.description" class="text-sm text-muted-foreground line-clamp-2">
         {{ movie.description }}
       </p>

@@ -17,7 +17,7 @@
 <h1 id="readme-top" align="center">My Cinema</h1>
 
 <p align="center">
-  Back-office for cinema management — PHP MVC + Vue 3 + MySQL
+  Back-office for cinema management | Epitech project · PHP MVC + Vue 3 + MySQL
 </p>
 
 <p align="center">🇬🇧 <a href="README.md"><b>English</b></a> · 🇫🇷 <a href="README.fr.md">Français</a></p>
